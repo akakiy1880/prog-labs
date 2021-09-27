@@ -1,63 +1,68 @@
-// Лабораторная работа №1
-// Вариант 824728
+class Lab {
+    public static void main(String[] args) {
+        // Вариант №53275
+        System.out.println("P3109 Полуянов Александр\n" + "Вариант №53275\n");
 
-public class Lab {
-	public static void main(String[] args) {
-		// Объявление и заполнение первого массива
-		final int F_SIZE = 17;
-		final int F_MAX = 20;
-		short[] f = new short[F_SIZE];
+        // Task 1
+        int[] a = new int[11];
+        for (int i = 5; i < 16; i++) {
+            a[i - 5] = i;
+        }
+        System.out.println(
+                "Создать одномерный массив a типа int. Заполнить его числами от 5 до 15 включительно в порядке возрастания.");
+        for (int i = 0; i < a.length; i++) {
+            System.out.printf("%d\t", a[i]);
+        }
 
-		for (int i=0; i<F_SIZE; i++) {
-			f[i] = (short) (F_MAX-i);
-		}
-		
-		// Объявление и заполнение второго массива
-		final int X_SIZE = 10;
-		final float MIN_RANGE = -11.0f;
-		final float MAX_RANGE = 2.0f; 
-		float[] x = new float[X_SIZE];
+        // Task 2
+        System.out.println(
+                "\n\nСоздать одномерный массив x типа double. Заполнить его 17-ю случайными числами в диапазоне от -7.0 до 14.0.");
+        double[] x = new double[17];
+        double min = -7.0;
+        double max = 14.0;
+        for (int i = 0; i < x.length; i++) {
+            x[i] = getRandomNumber(min, max);
+        }
+        for (int i = 0; i < x.length; i++) {
+            if (i % 5 == 0) {
+                // только для красоты
+                System.out.println("");
+            }
+            System.out.printf("%10.2f", x[i]);
+        }
+        
+        // Task 3
+        System.out.println(
+                "\n\nСоздать двумерный массив a размером 11x17. Вычислить его элементы по формулам из приложения.");
+        System.out.println("\tесли z[i] = 8, то z[i][j] = ln(sqrt(sin^2(h)))\n"
+                + "\tесли a[i] ∈ {5, 9, 10, 13, 14}, то z[i][j] = tan((1/4-(1/3/(1/2-h))^(h))^2)\n"
+                + "\tдля остальных значений z[i][j]: z[i][j] = e^(cos(tan(1/3*h)))");
+        double[][] z = new double[11][17];
+        for (int i = 0; i < z.length; i++) {
+            for (int j = 0; j < 17; j++) {
+                double h = x[j];
+                if (i == 8) {
+                    z[i][j] = Math.log(Math.sqrt(Math.pow(Math.sin(h), 2)));
+                } else if (i == 5 || i == 9 || i == 10 || i == 13 || i == 14) {
+                    z[i][j] = Math.tan(Math.pow(1 / 4 - (Math.pow((1 / 3 / (1 / 2 - h)), h)), 2));
+                } else {
+                    z[i][j] = Math.pow(Math.E, (Math.cos(Math.tan(1 / 3 * h))));
+                }
+            }
+        }
+        for (int i = 0; i < z.length; i++) {
+            for (int j = 0; j < 17; j++) {
+                if (j % 17 == 0) {
+                    System.out.println("");
+                }
+                System.out.printf("%8.2f", z[i][j]);
+            }
+        }
+        System.out.println("\n\nНапечатать полученный в результате массив в формате с двумя знаками после запятой.\n");
+    }
 
-		for (int i=0; i<X_SIZE; i++) {
-			x[i] = (float) ((Math.random() * (MAX_RANGE-MIN_RANGE)) + MIN_RANGE);
-		}
+    public static double getRandomNumber(double min, double max) {
+        return (double) ((Math.random() * (max - min)) + min);
+    }
 
-		// Объявление и заполнение третьего (итогового) массива
-		final int T_FIRST_SIZE = 17;
-		final int T_SECOND_SIZE = 10;
-		double[][] t = new double[T_FIRST_SIZE][T_SECOND_SIZE];
-		double cache;
-
-		for (int i=0; i<T_FIRST_SIZE; i++) {
-			for (int j=0; j<T_SECOND_SIZE; j++) {
-				if (f[i] == 15) {
-					cache = 2 / Math.pow(x[j], 1 - x[j]);
-					cache = Math.pow(cache, 2);
-					cache = Math.pow(cache * 2 / 3, 3);
-				} else if (f[i] == 5 || f[i] == 6 || f[i] == 11 || f[i] == 13 ||
-									 f[i] == 14 || f[i] == 17 || f[i] == 18 || f[i] == 20) {
-					cache = Math.pow(x[j] / 3, x[j]);
-					cache = Math.pow(cache, Math.asin((x[j] - 4.5) / 13));
-					cache = Math.pow(cache, 2 * Math.sin(x[j]));
-					cache = Math.pow(cache, (1 - Math.asin((x[j] - 4.5) / 13)) / 3);
-				} else {
-					cache = Math.pow(x[j] / (1-x[j]), 3);
-					cache = Math.pow(Math.E, cache);
-					cache = Math.pow(Math.E, cache);
-					cache = Math.sqrt(cache);
-					cache = 1 / Math.pow(Math.E, cache);
-					cache = Math.asin(cache);
-				}
-				t[i][j] = cache;
-			}
-		}
-
-		// Вывод третьего (итогового) массива
-		for (int i=0; i<T_FIRST_SIZE; i++) {
-			for (int j=0; j<T_SECOND_SIZE; j++) {
-				System.out.printf("%.5f ", t[i][j]);
-			}
-			System.out.println();
-		}
-	}
 }
